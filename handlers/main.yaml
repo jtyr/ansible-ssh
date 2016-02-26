@@ -2,5 +2,8 @@
 
 - name: Restart SSH daemon
   service:
-    name: sshd
+    name: "{{ ssh_service }}"
     state: restarted
+  when: >
+    ssh_server_service_started is not defined or
+    not ssh_server_service_started.changed

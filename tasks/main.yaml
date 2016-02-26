@@ -6,58 +6,59 @@
       ansible_os_family == "RedHat" or
       ansible_os_family == "Debian"
 
-- name: Install ssh for Debian
-  apt:
+- name: Install SSH packages
+  package:
     name: "{{ item }}"
     state: present
-  with_items:
-    - openssh-server
-    - openssh-client
+  with_items: ssh_packages
   notify:
     - Restart SSH daemon
-  when: ansible_os_family == "Debian"
-  tags:
-    - ssh_pkg
-
-- name: Install ssh for RedHat
-  yum:
-    name: "{{ item }}"
-    state: present
-  with_items:
-    - openssh-server
-    - openssh-clients
-  notify:
-    - Restart SSH daemon
-  when: ansible_os_family == "RedHat"
   tags:
     - ssh_pkg
 
 - name: SSH client configuration
   template:
     src: ssh_config.j2
-    dest: /etc/ssh/ssh_config
+    dest: "{{ ssh_client_config_location }}"
   tags:
     - ssh_config
+    - ssh_config_client
 
-- name: SSH daemon configuration
+- name: SSH server configuration
   template:
     src: sshd_config.j2
-    dest: /etc/ssh/sshd_config
+    dest: "{{ ssh_server_config_location }}"
+  register: ssh_server_config_result
   notify:
     - Restart SSH daemon
   tags:
     - ssh_config
+    - ssh_config_server
 
 - name: Set SSH banner
   template:
     src: banner.j2
     dest: "{{ ssh_banner_location }}"
-  when: ssh_banner is defined
+  when: >
+    ssh_banner is defined and
+    ssh_banner | length > 0
   tags:
     - ssh_config
+    - ssh_config_server
+
+- name: Enable SSH services
+  service:
+    name: "{{ ssh_service }}"
+    enabled: yes
+  tags:
+    - ssh_service
 
 - name: Start SSH services
   service:
-    name: sshd
-    enabled: yes
+    name: "{{ ssh_service }}"
     state: started
+  when: >
+      not ssh_server_config_result.changed
+  register: ssh_server_service_started
+  tags:
+    - ssh_service

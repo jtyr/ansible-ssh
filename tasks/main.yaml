@@ -10,7 +10,7 @@
   package:
     name: "{{ item }}"
     state: present
-  with_items: ssh_packages
+  with_items: "{{ ssh_packages }}"
   notify:
     - Restart SSH daemon
   tags:

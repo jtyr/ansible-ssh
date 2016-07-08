@@ -2,13 +2,5 @@
 {% for host, options in ssh_client_config.iteritems() %}
 
 Host {{ host }}{{ "\n" }}
-  {%- for key, value in options | dictsort %}
-    {%- if value is iterable and value is not string %}
-      {%- for v in value -%}
-        {{ "\t" }}{{ key }} = {{ v }}{{ "\n" }}
-      {%- endfor %}
-    {%- else -%}
-      {{ "\t" }}{{ key }} = {{ value }}{{ "\n" }}
-    {%- endif %}
-  {%- endfor %}
-{% endfor %}
+    {#-#}{{ options | encode_ini(delimiter=' ') | trim | comment(decoration='\t', prefix_count=0, postfix_count=0) }}
+{%- endfor -%}

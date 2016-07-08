@@ -40,6 +40,12 @@ requires to set `Banner` key with the value of the `ssh_banner_location` variabl
 in the `sshd_config` variable.
 
 
+Dependencies
+------------
+
+- [`config_encoder_filters`](https://github.com/jtyr/ansible-config_encoder_filters)
+
+
 License
 -------
 

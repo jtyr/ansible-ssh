@@ -1,11 +1,3 @@
 {{ ansible_managed | comment }}
 
-{% for key, value in ssh_server_config | dictsort %}
-  {%- if value is iterable and value is not string %}
-    {%- for v in value -%}
-      {{ key }} = {{ v }}{{ "\n" }}
-    {%- endfor %}
-  {%- else -%}
-    {{ key }} = {{ value }}{{ "\n" }}
-  {%- endif %}
-{% endfor %}
+{{ ssh_server_config | encode_ini(delimiter=' ') }}

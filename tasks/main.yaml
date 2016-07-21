@@ -40,6 +40,8 @@
     src: banner.j2
     dest: "{{ ssh_banner_location }}"
     mode: 0644
+  notify:
+    - Restart SSH daemon
   when: >
     ssh_banner is defined and
     ssh_banner | length > 0

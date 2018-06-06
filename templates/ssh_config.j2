@@ -1,5 +1,5 @@
 {{ ansible_managed | comment }}
-{% for host, options in ssh_client_config.iteritems() %}
+{% for host, options in ssh_client_config.items() %}
 
 Host {{ host }}{{ "\n" }}
     {#-#}{{ options | encode_ini(delimiter=' ') | trim | comment(decoration='\t', prefix_count=0, postfix_count=0) }}

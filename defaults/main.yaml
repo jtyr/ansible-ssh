@@ -42,16 +42,16 @@ ssh_client_config_all__custom: {}
 # Default client config
 ssh_client_config__default:
   '*': "{{
-    ssh_client_config_all__default.update(ssh_client_config_all__custom) }}{{
-    ssh_client_config_all__default }}"
+    ssh_client_config_all__default | combine(
+    ssh_client_config_all__default) }}"
 
 # Custom client config
 ssh_client_config__custom: {}
 
 # Final client config
 ssh_client_config: "{{
-  ssh_client_config__default.update(ssh_client_config__custom) }}{{
-  ssh_client_config__default }}"
+  ssh_client_config__default | combine(
+  ssh_client_config__custom) }}"
 
 
 # Default values of the server config options
@@ -80,5 +80,5 @@ ssh_server_config__custom: {}
 
 # Final server config
 ssh_server_config: "{{
-  ssh_server_config__default.update(ssh_server_config__custom) }}{{
-  ssh_server_config__default }}"
+  ssh_server_config__default | combine(
+  ssh_server_config__custom) }}"

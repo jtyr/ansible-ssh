@@ -4,7 +4,7 @@ galaxy_info:
   author: ssh
   description: Universal configuration of SSH daemon and client through a set of variables
   license: MIT
-  min_ansible_version: 2.5
+  min_ansible_version: 2.8
   platforms:
     - name: Debian
       versions:
@@ -12,6 +12,6 @@ galaxy_info:
     - name: EL
       versions:
         - all
-  categories:
+  galaxy_tags:
     - system
 dependencies: []

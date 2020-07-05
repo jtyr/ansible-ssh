@@ -86,7 +86,7 @@ ssh_client_config_all__custom: {}
 ssh_client_config__default:
   '*': "{{
     ssh_client_config_all__default | combine(
-    ssh_client_config_all__default) }}"
+    ssh_client_config_all__custom) }}"
 
 # Custom client config
 ssh_client_config__custom: {}

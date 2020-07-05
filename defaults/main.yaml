@@ -4,9 +4,16 @@
 ssh_service: sshd
 
 # Packages to be installed (exact version can be specified here)
-ssh_packages:
+ssh_packages_redhat:
   - openssh-server
   - openssh-clients
+
+ssh_packages_debian:
+  - openssh-server
+  - openssh-clients
+
+ssh_packages: >
+  {{ ssh_packages_redhat if ansible_os_family == 'RedHat' else ssh_packages_debian }}
 
 # SSH banner location
 ssh_banner_location: /etc/ssh/banner

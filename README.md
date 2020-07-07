@@ -40,9 +40,16 @@ List of variables used by the role:
 ssh_service: sshd
 
 # Packages to be installed (exact version can be specified here)
-ssh_packages:
+ssh_packages_redhat:
   - openssh-server
   - openssh-clients
+
+ssh_packages_debian:
+  - openssh-server
+  - openssh-client
+
+ssh_packages: >
+  {{ ssh_packages_redhat if ansible_os_family == 'RedHat' else ssh_packages_debian }}
 
 # SSH banner location
 ssh_banner_location: /etc/ssh/banner
@@ -78,16 +85,16 @@ ssh_client_config_all__custom: {}
 # Default client config
 ssh_client_config__default:
   '*': "{{
-    ssh_client_config_all__default.update(ssh_client_config_all__custom) }}{{
-    ssh_client_config_all__default }}"
+    ssh_client_config_all__default | combine(
+    ssh_client_config_all__custom) }}"
 
 # Custom client config
 ssh_client_config__custom: {}
 
 # Final client config
 ssh_client_config: "{{
-  ssh_client_config__default.update(ssh_client_config__custom) }}{{
-  ssh_client_config__default }}"
+  ssh_client_config__default | combine(
+  ssh_client_config__custom) }}"
 
 
 # Default values of the server config options
@@ -116,8 +123,8 @@ ssh_server_config__custom: {}
 
 # Final server config
 ssh_server_config: "{{
-  ssh_server_config__default.update(ssh_server_config__custom) }}{{
-  ssh_server_config__default }}"
+  ssh_server_config__default | combine(
+  ssh_server_config__custom) }}"
 ```
 
 The server and client configuration is using exact keys as they are in the

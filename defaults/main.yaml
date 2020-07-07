@@ -10,7 +10,7 @@ ssh_packages_redhat:
 
 ssh_packages_debian:
   - openssh-server
-  - openssh-clients
+  - openssh-client
 
 ssh_packages: >
   {{ ssh_packages_redhat if ansible_os_family == 'RedHat' else ssh_packages_debian }}
